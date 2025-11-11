@@ -4,7 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-
+private class CellDisplayData
+{
+    public PackageLocalItem localData;
+    public int displayNum;
+}
 
 public class PackagePanel : BasePanel
 {
@@ -43,19 +47,26 @@ public class PackagePanel : BasePanel
         UIDetailPanel.gameObject.SetActive(false);
     }
 
-    private void Start()
+    private override void onInitCom()
     {
-        RefreshUI();
+        UIOwnNumber = transform.Find("Top/OwnNumber");
+        UICloseBtn = transform.Find("Top/CloseBtn");
+        UICenter = transform.Find("Center");
+        UIScrollView = UICenter.Find("ScrollView");
+        UIDetailPanel = transform.Find("DetailPanel").gameObject;
+        UIDetailPanelExitBtn = UIDetailPanel.transform.Find("ExitBtn");
+        UIDetailName = UIDetailPanel.transform.Find("Name");
+        UIDetailNum = UIDetailPanel.transform.Find("Num");
+        UIDetailDescription = UIDetailPanel.transform.Find("Description");
+        UIDetailIcon = UIDetailPanel.transform.Find("Icon");
+
+        // 添加关闭按钮点击事件
+        UICloseBtn.GetComponent<Button>().onClick.AddListener(OnClickCloseBtn);
+        // 添加详情面板退出按钮点击事件
+        UIDetailPanelExitBtn.GetComponent<Button>().onClick.AddListener(OnClickDetailExitBtn);
     }
 
-
-    private void InitUI()
-    {
-        InitUIName();
-        InitClick();
-    }
-
-    public void RefreshUI()
+    public override void RefreshView()
     {
         RefreshScroll();
     }
@@ -66,12 +77,6 @@ public class PackagePanel : BasePanel
         PackageLocalItem localItem = GameManager.Instance.GetPackageLocalItemByUId(chooseUID);
         // 刷新详情界面
         UIDetailPanel.GetComponent<DetailsPanel>().Refresh(localItem, this);
-    }
-
-    private class CellDisplayData
-    {
-        public PackageLocalItem localData;
-        public int displayNum;
     }
 
     private void RefreshScroll()
@@ -128,38 +133,19 @@ public class PackagePanel : BasePanel
         }
     }
     
-    private void InitUIName()
-    {
-        UIOwnNumber = transform.Find("Top/PackageCapacity/OwnNumber");
-        UICloseBtn = transform.Find("Right/ShutDown/Button");
-        UICenter = transform.Find("Center");
-        UIScrollView = transform.Find("Center/ScrollView");
-        UIDetailPanelExitBtn = transform.Find("DetailsPanel/Top/ExitButton");
-        UIDetailName = transform.Find("DetailsPanel/Top/Titile");
-        UIDetailNum = transform.Find("DetailsPanel/Center/Number");
-        UIDetailDescription = transform.Find("DetailsPanel/Center/Description");
-        UIDetailIcon = transform.Find("DetailsPanel/Center/Image");
-
-    }
 
     public void ShowDetailPanel()
-{
-    if (UIDetailPanel != null)
     {
-        UIDetailPanel.gameObject.SetActive(true);
+        if (UIDetailPanel != null)
+        {
+            UIDetailPanel.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("DetailsPanel reference is missing!");
+        }
     }
-    else
-    {
-        Debug.LogError("DetailsPanel reference is missing!");
-    }
-}
-    private void InitClick()
-    {
-        UICloseBtn.GetComponent<Button>().onClick.AddListener(OnClickCloseBtn);
-        UIDetailPanelExitBtn.GetComponent<Button>().onClick.AddListener(OnClickDetailExitBtn);
-
-    }
-
+   
     private void OnClickCloseBtn()
     {
         print(">>>>> PackagePanel已关");

@@ -12,6 +12,22 @@ public class BasePanel : MonoBehaviour
         
     }
 
+    void Start()
+    {
+        onInitCom();
+        RefreshView();
+    }
+
+    public virtual void onInitCom()
+    {
+
+    }
+
+    public virtual void RefreshView()
+    {
+
+    }
+    
     public virtual void SetActive(bool active)
     {
         gameObject.SetActive(active);
