@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class DetailsPanel : MonoBehaviour
+public class DetailsPanel : BasePanel
 {
     private Transform UITitile;
     private Transform UIDescription;
@@ -12,18 +12,13 @@ public class DetailsPanel : MonoBehaviour
     private PackageTableItem packageTableItem;
     private PackagePanel uiParent;
 
-    private void Awake()
-    {
-        InitUIName();
-        //Test();
-    }
 
     // private void Test()
     // {
     //     Refresh(GameManager.Instance.GetPackageLocalData()[1], null);
     // }
 
-    private void InitUIName()
+    private override void onInitCom()
     {
         UITitile = transform.Find("Top/Titile");
         UIDescription = transform.Find("Center/Description");
@@ -32,7 +27,7 @@ public class DetailsPanel : MonoBehaviour
     }
 
 
-    public void Refresh(PackageLocalItem packageLocalData, PackagePanel uiParent)
+    public void onRefreshView(PackageLocalItem packageLocalData, PackagePanel uiParent)
     {
         // 初始化：动态数据、静态数据、父物品逻辑
         this.packageLocalData = packageLocalData;

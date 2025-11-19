@@ -40,13 +40,6 @@ public class PackagePanel : BasePanel
         }
     }
 
-    override protected void Awake()
-    {
-        base.Awake();
-        InitUI();
-        UIDetailPanel.gameObject.SetActive(false);
-    }
-
     private override void onInitCom()
     {
         UIOwnNumber = transform.Find("Top/OwnNumber");
@@ -59,14 +52,15 @@ public class PackagePanel : BasePanel
         UIDetailNum = UIDetailPanel.transform.Find("Num");
         UIDetailDescription = UIDetailPanel.transform.Find("Description");
         UIDetailIcon = UIDetailPanel.transform.Find("Icon");
-
+        
+        UIDetailPanel.gameObject.SetActive(false);
         // 添加关闭按钮点击事件
         UICloseBtn.GetComponent<Button>().onClick.AddListener(OnClickCloseBtn);
         // 添加详情面板退出按钮点击事件
         UIDetailPanelExitBtn.GetComponent<Button>().onClick.AddListener(OnClickDetailExitBtn);
     }
 
-    public override void RefreshView()
+    public override void onRefreshView()
     {
         RefreshScroll();
     }

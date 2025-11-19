@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasePanel : MonoBehaviour
+public abstract class BasePanel : MonoBehaviour
 {
     protected bool isRemove = false;
     protected new string name;
 
-    protected virtual void Awake()
+    void Awake()
     {
         
     }
@@ -15,15 +15,15 @@ public class BasePanel : MonoBehaviour
     void Start()
     {
         onInitCom();
-        RefreshView();
+        onRefreshView();
     }
 
-    public virtual void onInitCom()
+    protected abstract void onInitCom()
     {
 
     }
 
-    public virtual void RefreshView()
+    protected abstract void onRefreshView()
     {
 
     }
