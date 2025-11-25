@@ -55,11 +55,6 @@ public class PackageLocalData
 
         if (items != null && items.Count > 0)
         {
-            foreach(PackageLocalItem item in items)
-            {
-                Debug.Log($"使用内存中的背包数据:{item}");
-
-            }
             return items;
         }
 
