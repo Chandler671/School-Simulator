@@ -431,7 +431,7 @@ public class ProducePanel : BasePanel
         PackagePanel packagePanel = UIManager.Instance.GetPanel(UIConst.PackagePanel) as PackagePanel;
         if (packagePanel != null && packagePanel.isActiveAndEnabled)
         {
-            packagePanel.RefreshUI();
+            packagePanel.RefreshScroll();
         }
     }
 }

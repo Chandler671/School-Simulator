@@ -18,12 +18,12 @@ public abstract class BasePanel : MonoBehaviour
         onRefreshView();
     }
 
-    protected abstract void onInitCom()
+    protected virtual void onInitCom()
     {
-
+        
     }
 
-    protected abstract void onRefreshView()
+    protected virtual void onRefreshView()
     {
 
     }

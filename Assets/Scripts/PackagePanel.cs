@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-private class CellDisplayData
+class CellDisplayData
 {
     public PackageLocalItem localData;
     public int displayNum;
@@ -40,7 +40,7 @@ public class PackagePanel : BasePanel
         }
     }
 
-    private override void onInitCom()
+    protected override void onInitCom()
     {
         UIOwnNumber = transform.Find("Top/OwnNumber");
         UICloseBtn = transform.Find("Top/CloseBtn");
@@ -60,7 +60,7 @@ public class PackagePanel : BasePanel
         UIDetailPanelExitBtn.GetComponent<Button>().onClick.AddListener(OnClickDetailExitBtn);
     }
 
-    public override void onRefreshView()
+    protected override void onRefreshView()
     {
         RefreshScroll();
     }
@@ -73,7 +73,7 @@ public class PackagePanel : BasePanel
         UIDetailPanel.GetComponent<DetailsPanel>().Refresh(localItem, this);
     }
 
-    private void RefreshScroll()
+    public void RefreshScroll()
     {
         // 清理滚动容器中原本的物品
         RectTransform scrollContent = UIScrollView.GetComponent<ScrollRect>().content;

@@ -18,7 +18,7 @@ public class DetailsPanel : BasePanel
     //     Refresh(GameManager.Instance.GetPackageLocalData()[1], null);
     // }
 
-    private override void onInitCom()
+    protected override void onInitCom()
     {
         UITitile = transform.Find("Top/Titile");
         UIDescription = transform.Find("Center/Description");
@@ -27,7 +27,7 @@ public class DetailsPanel : BasePanel
     }
 
 
-    public void onRefreshView(PackageLocalItem packageLocalData, PackagePanel uiParent)
+    public void Refresh(PackageLocalItem packageLocalData, PackagePanel uiParent)
     {
         // 初始化：动态数据、静态数据、父物品逻辑
         this.packageLocalData = packageLocalData;
