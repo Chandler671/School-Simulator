@@ -12,7 +12,7 @@ public class Startup
     // 这个方法会在运行前执行
     static Startup()
     {
-        string path = Application.dataPath + "/Editor/PackageData.xlsx";
+        string path = Application.dataPath + "/Editor/Excel/PackageData.xlsx";
         string assetName = "Package";
 
         FileInfo fileInfo = new FileInfo(path);

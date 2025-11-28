@@ -57,8 +57,8 @@ public class UIManager
         pathDict = new Dictionary<string, string>()
         {
             {UIConst.PackagePanel, "Package/PackagePanel"},
-            {UIConst.ProducePanel, "Produce/ProducePanel"},
-            {UIConst.DetailsPanel, "DetailsPanel"},
+            {UIConst.ProducePanel, "Package/ProducePanel"},
+            {UIConst.DetailsPanel, "Package/DetailsPanel"},
         };
     }
 
@@ -95,7 +95,7 @@ public class UIManager
         GameObject panelPrefab = null;
         if (!prefabDict.TryGetValue(name, out panelPrefab))
         {
-            string realPath = "Prefab/Panel/" + path;
+            string realPath = "Prefab/" + path;
 
             panelPrefab = Resources.Load<GameObject>(realPath) as GameObject;
             prefabDict.Add(name, panelPrefab);
