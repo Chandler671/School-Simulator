@@ -5,22 +5,37 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
-    private PackageTable packageTable;
-
-    private void Awake()
-    {
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
-        //UIManager.Instance.OpenPanel(UIConst.ProducePanel);
-    }
 
     public static GameManager Instance
     {
         get
         {
+            if (_instance == null)
+            {
+                // 自动创建管理器（如果场景中没有）
+                GameObject obj = new GameObject("GameManager");
+                _instance = obj.AddComponent<GameManager>();
+                DontDestroyOnLoad(obj); // 跨场景不销毁
+            }
             return _instance;
         }
     }
+
+    private PackageTable packageTable;
+
+    private void Awake()
+    {
+        // 确保单例
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+        Debug.Log("Game已初始化");
+    }
+
 
     void Start()
     {
