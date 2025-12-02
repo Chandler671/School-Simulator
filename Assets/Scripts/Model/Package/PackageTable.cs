@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class PackageTable : ScriptableObject 
+public class PackageTable : BaseTable<PackageTableItem>
 {
-    public List<PackageTableItem> DataList = new List<PackageTableItem>();
+
 }
 
 [System.Serializable]
