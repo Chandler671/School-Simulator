@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviour
 
     private PackageTable packageTable;
 
+    // 自动保存数据间隔（秒）
+    private float _autoSaveInterval = PlayerPrefsManager.Instance._autoSaveInterval;
+    // 自动保存计时器
+    private float _autoSaveTimer = PlayerPrefsManager.Instance._autoSaveTimer;
     private void Awake()
     {
         // 确保单例
@@ -39,11 +43,21 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // todo
-        //UIManager.Instance.OpenPanel(UIConst.PackagePanel);
         
-        // print(GetPackageLocalData().Count);
-        // print(GetPackageTable().DataList.Count);
+    }
+
+    private void Update() 
+    {
+        // 自动保存数据
+        if (this._autoSaveInterval > 0 && PlayerPrefsManager.Instance._isDirty)
+        {
+            this._autoSaveTimer += Time.deltaTime;
+            if (this._autoSaveTimer >=this. _autoSaveInterval)
+            {
+                PlayerPrefsManager.Instance.ForceSave();
+                this._autoSaveTimer = 0f;
+            }
+        }
     }
 
     public PackageTable GetPackageTable()
