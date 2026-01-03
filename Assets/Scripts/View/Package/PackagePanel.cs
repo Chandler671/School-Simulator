@@ -43,11 +43,10 @@ public class PackagePanel : BasePanel
     protected override void onInitCom()
     {
         UIOwnNumber = transform.Find("Top/OwnNumber");
-        UICloseBtn = transform.Find("Top/CloseBtn");
+        UICloseBtn = transform.Find("Right/ShutDown/Button");
         UICenter = transform.Find("Center");
         UIScrollView = UICenter.Find("ScrollView");
-        UIDetailPanel = transform.Find("DetailPanel").gameObject;
-        UIDetailPanelExitBtn = UIDetailPanel.transform.Find("ExitBtn");
+        UIDetailPanelExitBtn = UIDetailPanel.transform.Find("Top/ExitButton");
         UIDetailName = UIDetailPanel.transform.Find("Name");
         UIDetailNum = UIDetailPanel.transform.Find("Num");
         UIDetailDescription = UIDetailPanel.transform.Find("Description");

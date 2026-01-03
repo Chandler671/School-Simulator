@@ -9,12 +9,11 @@ public abstract class BasePanel : MonoBehaviour
 
     void Awake()
     {
-        
+        onInitCom();
     }
 
     void Start()
     {
-        onInitCom();
         onRefreshView();
     }
 

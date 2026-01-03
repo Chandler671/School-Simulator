@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     {
         if (packageTable == null)
         {
-            packageTable = Resources.Load<PackageTable>("Package");
+            packageTable = Resources.Load<PackageTable>("Data/PackageTable");
         }
         return packageTable;
     }
