@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,24 +13,33 @@ public class GameManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                // ×Ô¶¯´´½¨¹ÜÀíÆ÷£¨Èç¹û³¡¾°ÖĞÃ»ÓĞ£©
+                // è‡ªåŠ¨åˆ›å»ºç®¡ç†å™¨ï¼ˆå¦‚æœåœºæ™¯ä¸­æ²¡æœ‰ï¼‰
                 GameObject obj = new GameObject("GameManager");
                 _instance = obj.AddComponent<GameManager>();
-                DontDestroyOnLoad(obj); // ¿ç³¡¾°²»Ïú»Ù
+                DontDestroyOnLoad(obj); // è·¨åœºæ™¯ä¸é”€æ¯
             }
             return _instance;
         }
     }
 
-    private PackageTable packageTable;
+    [Header("åˆ†è¾¨ç‡è®¾ç½®")]
+    [SerializeField] private int targetWidth = 1920;
+    [SerializeField] private int targetHeight = 1080;
+    [SerializeField] private int targetRefreshRate = 60;
+    
+    [Header("åœºæ™¯è®¾ç½®")]
+    [SerializeField] private string loadingSceneName = "Loading";
 
-    // ×Ô¶¯±£´æÊı¾İ¼ä¸ô£¨Ãë£©
+    private PackageTable packageTable;
+    private bool isInitialized = false;
+
+    // è‡ªåŠ¨ä¿å­˜æ•°æ®é—´éš”ï¼ˆç§’ï¼‰
     private float _autoSaveInterval = PlayerPrefsManager.Instance._autoSaveInterval;
-    // ×Ô¶¯±£´æ¼ÆÊ±Æ÷
+    // è‡ªåŠ¨ä¿å­˜è®¡æ—¶å™¨
     private float _autoSaveTimer = PlayerPrefsManager.Instance._autoSaveTimer;
     private void Awake()
     {
-        // È·±£µ¥Àı
+        // ç¡®ä¿å•ä¾‹
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
@@ -37,7 +47,8 @@ public class GameManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
-        Debug.Log("GameÒÑ³õÊ¼»¯");
+        InitializeGame();
+        Debug.Log("Gameå·²åˆå§‹åŒ–");
     }
 
 
@@ -48,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void Update() 
     {
-        // ×Ô¶¯±£´æÊı¾İ
+        // è‡ªåŠ¨ä¿å­˜æ•°æ®
         if (this._autoSaveInterval > 0 && PlayerPrefsManager.Instance._isDirty)
         {
             this._autoSaveTimer += Time.deltaTime;
@@ -57,6 +68,53 @@ public class GameManager : MonoBehaviour
                 PlayerPrefsManager.Instance.ForceSave();
                 this._autoSaveTimer = 0f;
             }
+        }
+    }
+
+    void InitializeGame()
+    {
+        if (isInitialized) return;
+        
+        // è®¾ç½®åˆå§‹åˆ†è¾¨ç‡
+        SetInitialResolution();
+        
+        // ç¡®ä¿å½“å‰æ˜¯åŠ è½½åœºæ™¯
+        if (SceneManager.GetActiveScene().name != loadingSceneName)
+        {
+            SceneManager.LoadScene(loadingSceneName);
+        }
+        
+        isInitialized = true;
+    }
+    
+    void SetInitialResolution()
+    {
+        bool foundExactMatch = false;
+        // è·å–å½“å‰æ˜¾ç¤ºå™¨æ”¯æŒçš„åˆ†è¾¨ç‡
+        Resolution res = Screen.currentResolution;
+        // è®¾ç½®ç›®æ ‡å¸§ç‡
+        RefreshRate targetRate = new RefreshRate
+        {
+            numerator = (uint)targetRefreshRate, // ä¾‹å¦‚ 60
+            denominator = 1
+        };
+
+        if (res.width == targetWidth && res.height == targetHeight )
+        {
+            foundExactMatch = true;
+        }
+        
+        if (foundExactMatch)
+        {
+            Screen.SetResolution(res.width, 
+                               res.height, 
+                               FullScreenMode.Windowed, 
+                               targetRate);
+        }
+        else
+        {
+            // å¦‚æœæ²¡æœ‰ç²¾ç¡®åŒ¹é…ï¼Œä½¿ç”¨é»˜è®¤è®¾ç½®
+            Screen.SetResolution(targetWidth, targetHeight, FullScreenMode.Windowed, targetRate);
         }
     }
 
@@ -114,10 +172,10 @@ public class PackageItemComparer : IComparer<PackageLocalItem>
     {
         PackageTableItem x = GameManager.Instance.GetPackageItemById(a.id);
         PackageTableItem y = GameManager.Instance.GetPackageItemById(b.id);
-        // Ê×ÏÈ°´star´Ó´óµ½Ğ¡ÅÅĞò
+        // é¦–å…ˆæŒ‰starä»å¤§åˆ°å°æ’åº
         int starComparison = y.star.CompareTo(x.star);
 
-        // Èç¹ûstarÏàÍ¬£¬Ôò°´id´Ó´óµ½Ğ¡ÅÅĞò
+        // å¦‚æœstarç›¸åŒï¼Œåˆ™æŒ‰idä»å¤§åˆ°å°æ’åº
         if (starComparison == 0)
         {
             int idComparison = x.id.CompareTo(y.id);

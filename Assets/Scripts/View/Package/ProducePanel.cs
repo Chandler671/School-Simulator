@@ -27,10 +27,10 @@ public class ProducePanel : BasePanel
     private PackageLocalItem packageLocalData;
     private PackageTableItem packageTableItem;
     public GameObject produceRecipeItemPrefab;
-    private int currentSelectedId = -1; // µ±Ç°Ñ¡ÖĞµÄÎïÆ·ID
-    private GameObject currentSelectedRecipeItem; // µ±Ç°Ñ¡ÖĞµÄÅä·½ÎïÆ·
-    private List<int> recipeIds = new List<int>() { 1, 2, 3 }; // Åä·½ÎïÆ·IDÁĞ±í
-    private Dictionary<int, int> materialRequirements = new Dictionary<int, int>(); // ²ÄÁÏĞèÇó×Öµä
+    private int currentSelectedId = -1; // å½“å‰é€‰ä¸­çš„ç‰©å“ID
+    private GameObject currentSelectedRecipeItem; // å½“å‰é€‰ä¸­çš„é…æ–¹ç‰©å“
+    private List<int> recipeIds = new List<int>() { 1, 2, 3 }; // é…æ–¹ç‰©å“IDåˆ—è¡¨
+    private Dictionary<int, int> materialRequirements = new Dictionary<int, int>(); // ææ–™éœ€æ±‚å­—å…¸
 
      
 
@@ -53,7 +53,7 @@ public class ProducePanel : BasePanel
 
     private void RefreshScroll()
     {
-        // Ìí¼Ó¿ÕÖµ¼ì²é
+        // æ·»åŠ ç©ºå€¼æ£€æŸ¥
         if (UIScrollView == null)
         {
             Debug.LogError("UIScrollView is null! Check InitUIName()");
@@ -69,15 +69,15 @@ public class ProducePanel : BasePanel
 
         RectTransform scrollContent = scrollRect.content;
 
-        // ÇåÀí¹ö¶¯ÈİÆ÷ÖĞÔ­±¾µÄÎïÆ·
+        // æ¸…ç†æ»šåŠ¨å®¹å™¨ä¸­åŸæœ¬çš„ç‰©å“
         for (int i = 0; i < scrollContent.childCount; i++)
         {
             Destroy(scrollContent.GetChild(i).gameObject);
         }
 
-        currentSelectedRecipeItem = null; // ÖØÖÃµ±Ç°Ñ¡ÖĞ
+        currentSelectedRecipeItem = null; // é‡ç½®å½“å‰é€‰ä¸­
 
-        // Éú³ÉÅä·½ÎïÆ·
+        // ç”Ÿæˆé…æ–¹ç‰©å“
         foreach (int id in recipeIds)
         {
             PackageTableItem tableItem = GameManager.Instance.GetPackageItemById(id);
@@ -86,15 +86,15 @@ public class ProducePanel : BasePanel
                 Transform item = Instantiate(produceRecipeItemPrefab.transform, scrollContent);
                 item.name = "Recipe_" + id;
 
-                // »ñÈ¡×é¼şÒıÓÃ
+                // è·å–ç»„ä»¶å¼•ç”¨
                 Transform icon = item.Find("Top/Icon");
                 Transform nameText = item.Find("Bottom/Name");
                 Transform numText = item.Find("Top/Num");
 
-                // Òş²ØÊıÁ¿ÏÔÊ¾
+                // éšè—æ•°é‡æ˜¾ç¤º
                 if (numText != null) numText.gameObject.SetActive(false);
 
-                // ÉèÖÃÍ¼±êºÍÃû³Æ
+                // è®¾ç½®å›¾æ ‡å’Œåç§°
                 Texture2D t = (Texture2D)Resources.Load(tableItem.imgPath);
                 if (t != null)
                 {
@@ -103,13 +103,13 @@ public class ProducePanel : BasePanel
                 }
                 nameText.GetComponent<Text>().text = tableItem.name;
 
-                // Ìí¼ÓÑ¡ÖĞ×´Ì¬ÒıÓÃ
-                Transform selectedIndicator = item.Find("SelectedIndicator"); // ¸ù¾İÊµ¼ÊÔ¤ÖÆÌå½á¹¹µ÷Õû
+                // æ·»åŠ é€‰ä¸­çŠ¶æ€å¼•ç”¨
+                Transform selectedIndicator = item.Find("SelectedIndicator"); // æ ¹æ®å®é™…é¢„åˆ¶ä½“ç»“æ„è°ƒæ•´
                 if (selectedIndicator != null)
                 {
                     selectedIndicator.gameObject.SetActive(false);
                 }
-                // Ìí¼Óµã»÷ÊÂ¼ş
+                // æ·»åŠ ç‚¹å‡»äº‹ä»¶
                 Button btn = item.GetComponent<Button>();
                 if (btn == null) btn = item.gameObject.AddComponent<Button>();
                 btn.onClick.RemoveAllListeners();
@@ -118,17 +118,17 @@ public class ProducePanel : BasePanel
         }
     }
 
-    // Åä·½Ñ¡Ôñ´¦Àí
+    // é…æ–¹é€‰æ‹©å¤„ç†
     private void OnRecipeSelected(int id, GameObject recipeItem)
     {
-        // È¡ÏûÖ®Ç°Ñ¡ÖĞµÄ×´Ì¬
+        // å–æ¶ˆä¹‹å‰é€‰ä¸­çš„çŠ¶æ€
         if (currentSelectedRecipeItem != null)
         {
             Transform prevSelected = currentSelectedRecipeItem.transform.Find("SelectedIndicator");
             if (prevSelected != null) prevSelected.gameObject.SetActive(false);
         }
 
-        // ÉèÖÃĞÂµÄÑ¡ÖĞ×´Ì¬
+        // è®¾ç½®æ–°çš„é€‰ä¸­çŠ¶æ€
         currentSelectedRecipeItem = recipeItem;
         Transform currentSelected = recipeItem.transform.Find("SelectedIndicator");
         if (currentSelected != null) currentSelected.gameObject.SetActive(true);
@@ -136,22 +136,22 @@ public class ProducePanel : BasePanel
         currentSelectedId = id;
         packageTableItem = GameManager.Instance.GetPackageItemById(id);
 
-        // Ë¢ĞÂÓÒ²àÏêÇé
+        // åˆ·æ–°å³ä¾§è¯¦æƒ…
         RefreshDetail(packageTableItem);
 
-        // ÖØÖÃÖÆ×÷ÊıÁ¿
+        // é‡ç½®åˆ¶ä½œæ•°é‡
         initProduceNum = 1;
-        UIProduceNum.GetComponent<Text>().text = $"ÖÆ×÷¡Á{initProduceNum}".ToString();
+        UIProduceNum.GetComponent<Text>().text = $"åˆ¶ä½œÃ—{initProduceNum}".ToString();
         UIRight.gameObject.SetActive(true);
     }
 
-    // Ë¢ĞÂÓÒ²àÏêÇé
+    // åˆ·æ–°å³ä¾§è¯¦æƒ…
     private void RefreshDetail(PackageTableItem packageTableItem)
     {
         List<PackageLocalItem> localItems = GameManager.Instance.GetPackageLocalData();
         if (packageTableItem == null) return;
 
-        // ÉèÖÃÎïÆ·ÏêÇé
+        // è®¾ç½®ç‰©å“è¯¦æƒ…
         Texture2D t = (Texture2D)Resources.Load(packageTableItem.imgPath);
         if (t != null)
         {
@@ -163,22 +163,22 @@ public class ProducePanel : BasePanel
         {
             if (localItem.id == packageTableItem.id)
             {
-                UIOwnNumber.GetComponent<Text>().text = $"ÓµÓĞ£º{localItem.num}";
+                UIOwnNumber.GetComponent<Text>().text = $"æ‹¥æœ‰ï¼š{localItem.num}";
             }
         }
         UIDescription.GetComponent<Text>().text = packageTableItem.description;
 
-        // ½âÎö²ÄÁÏĞèÇó
+        // è§£æææ–™éœ€æ±‚
         materialRequirements.Clear();
         ParseMaterialRequirements(packageTableItem.MaterialRequirement);
 
-        // ÉèÖÃ²ÄÁÏÏÔÊ¾
+        // è®¾ç½®ææ–™æ˜¾ç¤º
         SetMaterialDisplay(UIMaterialFirstIcon, UIMaterialFirstNeed, 0);
         SetMaterialDisplay(UIMaterialSecondIcon, UIMaterialSecondNeed, 1);
         SetMaterialDisplay(UIMaterialThirdIcon, UIMaterialThirdNeed, 2);
     }
 
-    // ½âÎö²ÄÁÏĞèÇó
+    // è§£æææ–™éœ€æ±‚
     private void ParseMaterialRequirements(string requirements)
     {
         if (string.IsNullOrEmpty(requirements)) return;
@@ -194,7 +194,7 @@ public class ProducePanel : BasePanel
         }
     }
 
-    // ÉèÖÃ²ÄÁÏÏÔÊ¾
+    // è®¾ç½®ææ–™æ˜¾ç¤º
     private void SetMaterialDisplay(Transform iconTransform, Transform textTransform, int index)
     {
         if (index >= materialRequirements.Count)
@@ -209,7 +209,7 @@ public class ProducePanel : BasePanel
         {
             if (i == index)
             {
-                // »ñÈ¡²ÄÁÏÊı¾İ
+                // è·å–ææ–™æ•°æ®
                 PackageTableItem materialItem = GameManager.Instance.GetPackageItemById(kvp.Key);
                 if (materialItem == null)
                 {
@@ -223,7 +223,7 @@ public class ProducePanel : BasePanel
                     if (item.id == kvp.Key) ownedAmount += item.num;
                 }
 
-                // ÉèÖÃÍ¼±ê - Ìí¼Ó¿ÕÖµ¼ì²é
+                // è®¾ç½®å›¾æ ‡ - æ·»åŠ ç©ºå€¼æ£€æŸ¥
                 if (iconTransform != null)
                 {
                     Texture2D t = (Texture2D)Resources.Load(materialItem.imgPath);
@@ -250,7 +250,7 @@ public class ProducePanel : BasePanel
                 {
                     Debug.LogError("iconTransform is null");
                 }
-                // ÉèÖÃÎÄ±¾ - Ìí¼Ó¿ÕÖµ¼ì²é
+                // è®¾ç½®æ–‡æœ¬ - æ·»åŠ ç©ºå€¼æ£€æŸ¥
                 if (textTransform != null)
                 {
                     Text textComponent = textTransform.GetComponent<Text>();
@@ -314,7 +314,7 @@ public class ProducePanel : BasePanel
     private void OnClickAddOneBtn()
     {
         initProduceNum++;
-        UIProduceNum.GetComponent<Text>().text = $"ÖÆ×÷¡Á{initProduceNum}".ToString();
+        UIProduceNum.GetComponent<Text>().text = $"åˆ¶ä½œÃ—{initProduceNum}".ToString();
     }
 
     private void OnClickDeleteOneBtn()
@@ -322,7 +322,7 @@ public class ProducePanel : BasePanel
         if (initProduceNum > 1)
         {
             initProduceNum--;
-            UIProduceNum.GetComponent<Text>().text = $"ÖÆ×÷¡Á{initProduceNum}".ToString();
+            UIProduceNum.GetComponent<Text>().text = $"åˆ¶ä½œÃ—{initProduceNum}".ToString();
         }
     }
 
@@ -330,23 +330,23 @@ public class ProducePanel : BasePanel
     {
         if (currentSelectedId == -1) return;
 
-        // ¼ì²é²ÄÁÏÊÇ·ñ×ã¹»
+        // æ£€æŸ¥ææ–™æ˜¯å¦è¶³å¤Ÿ
         if (!CheckMaterialsAvailable()) return;
 
-        // ¿Û³ı²ÄÁÏ
+        // æ‰£é™¤ææ–™
         ConsumeMaterials();
 
-        // Ìí¼ÓÖÆ×÷ÎïÆ·
+        // æ·»åŠ åˆ¶ä½œç‰©å“
         AddProducedItem();
 
-        // ±£´æÊı¾İ
+        // ä¿å­˜æ•°æ®
         PackageLocalData.Instance.SavePackage();
 
-        // Ë¢ĞÂPackagePanel
+        // åˆ·æ–°PackagePanel
         RefreshPackagePanel();
     }
 
-    // ¼ì²é²ÄÁÏÊÇ·ñ×ã¹»
+    // æ£€æŸ¥ææ–™æ˜¯å¦è¶³å¤Ÿ
     private bool CheckMaterialsAvailable()
     {
         List<PackageLocalItem> localItems = GameManager.Instance.GetPackageLocalData();
@@ -364,14 +364,14 @@ public class ProducePanel : BasePanel
 
             if (owned < required)
             {
-                Debug.Log($"{packageTableItem.name}²ÄÁÏ²»×ã! , ĞèÒª {required}, µ±Ç°Ö»ÓĞ {owned}");
+                Debug.Log($"{packageTableItem.name}ææ–™ä¸è¶³! , éœ€è¦ {required}, å½“å‰åªæœ‰ {owned}");
                 return false;
             }
         }
         return true;
     }
 
-    // ¿Û³ı²ÄÁÏ
+    // æ‰£é™¤ææ–™
     private void ConsumeMaterials()
     {
         List<PackageLocalItem> localItems = PackageLocalData.Instance.items;
@@ -395,7 +395,7 @@ public class ProducePanel : BasePanel
                         localItems[i].num = 0;
                     }
 
-                    // ÒÆ³ıÊıÁ¿Îª0µÄÎïÆ·
+                    // ç§»é™¤æ•°é‡ä¸º0çš„ç‰©å“
                     if (localItems[i].num == 0)
                     {
                         localItems.RemoveAt(i);
@@ -407,25 +407,23 @@ public class ProducePanel : BasePanel
         }
     }
 
-    // Ìí¼ÓÖÆ×÷ÎïÆ·
+    // æ·»åŠ åˆ¶ä½œç‰©å“
     private void AddProducedItem()
     {
         List<PackageLocalItem> localItems = PackageLocalData.Instance.items;
-        bool found = false;
 
-        // ²éÕÒÊÇ·ñÒÑÓĞ¸ÃÎïÆ·
+        // æŸ¥æ‰¾æ˜¯å¦å·²æœ‰è¯¥ç‰©å“
         foreach (var item in localItems)
         {
             if (item.id == currentSelectedId)
             {
                 item.num += initProduceNum;
-                found = true;
                 break;
             }
         }
     }
 
-   // Ë¢ĞÂPackagePanel
+   // åˆ·æ–°PackagePanel
     private void RefreshPackagePanel()
     {
         PackagePanel packagePanel = UIManager.Instance.GetPanel(UIConst.PackagePanel) as PackagePanel;
