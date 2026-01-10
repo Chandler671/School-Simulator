@@ -660,7 +660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingSlider: {fileID: 1767842645}
   loadingText: {fileID: 73543515}
-  fakeLoadTime: 2
+  fakeLoadTime: 4
 --- !u!1 &1463716812
 GameObject:
   m_ObjectHideFlags: 0
