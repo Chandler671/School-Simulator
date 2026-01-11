@@ -14,6 +14,7 @@ public abstract class BasePanel : MonoBehaviour
 
     void Start()
     {
+        onOpenPanel();
         onRefreshView();
     }
 
@@ -25,6 +26,11 @@ public abstract class BasePanel : MonoBehaviour
     protected virtual void onRefreshView()
     {
 
+    }
+
+    protected virtual void onOpenPanel()
+    {
+        
     }
     
     public virtual void SetActive(bool active)
