@@ -24,7 +24,7 @@ public class PackageLocalData
     public void SavePackage()
     {
         string inventoryJson = JsonUtility.ToJson(this);
-        Debug.Log($"±£´æ±³°üÊı¾İ: {inventoryJson}"); // Ìí¼ÓÈÕÖ¾
+        Debug.Log($"ä¿å­˜èƒŒåŒ…æ•°æ®: {inventoryJson}"); // æ·»åŠ æ—¥å¿—
         PlayerPrefs.SetString("PackageLocalData", inventoryJson);
         PlayerPrefs.Save();
     }
@@ -51,7 +51,7 @@ public class PackageLocalData
     // PackageLocalData.cs
     public List<PackageLocalItem> LoadPackage()
     {
-        Debug.Log("¿ªÊ¼¼ÓÔØ±³°üÊı¾İ...");
+        Debug.Log("å¼€å§‹åŠ è½½èƒŒåŒ…æ•°æ®...");
 
         if (items != null && items.Count > 0)
         {
@@ -61,7 +61,7 @@ public class PackageLocalData
         if (PlayerPrefs.HasKey("PackageLocalData"))
         {
             string inventoryJson = PlayerPrefs.GetString("PackageLocalData");
-            Debug.Log($"´ÓPlayerPrefs¼ÓÔØÊı¾İ: {inventoryJson}");
+            Debug.Log($"ä»PlayerPrefsåŠ è½½æ•°æ®: {inventoryJson}");
 
             PackageLocalData packageLocalData = JsonUtility.FromJson<PackageLocalData>(inventoryJson);
             items = packageLocalData?.items ?? new List<PackageLocalItem>();
@@ -69,7 +69,7 @@ public class PackageLocalData
         }
         else
         {
-            Debug.LogWarning("Î´ÕÒµ½´æ´¢µÄ±³°üÊı¾İ£¬´´½¨ĞÂÁĞ±í");
+            Debug.LogWarning("æœªæ‰¾åˆ°å­˜å‚¨çš„èƒŒåŒ…æ•°æ®ï¼Œåˆ›å»ºæ–°åˆ—è¡¨");
             items = new List<PackageLocalItem>();
             return items;
         }

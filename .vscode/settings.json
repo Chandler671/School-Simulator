@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "School Simulator.sln"
+    "dotnet.defaultSolution": "School-Simulator.sln"
 }
