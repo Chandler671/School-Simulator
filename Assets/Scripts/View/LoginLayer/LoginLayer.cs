@@ -20,7 +20,6 @@ public class LoginLayer : BasePanel
     public UnityEvent onLoginStarted;          // 登录开始时触发
     public UnityEvent onLoginSuccess;          // 登录成功时触发
     public UnityEvent onLoginFailed;           // 登录失败时触发
-    public UnityEvent onSceneTransitionStart;  // 场景切换开始时触发
     
     // 用于存储登录状态
     private bool isLoggingIn = false;
@@ -42,7 +41,7 @@ public class LoginLayer : BasePanel
         {
             usernameInputField.contentType = InputField.ContentType.Standard; ;
             usernameInputField.text = currentUsername;
-            if (currentUsername == "")
+            if (currentUsername == "" && placeHolder != null)
             {
                 placeHolder.text = "请输入昵称";
                 placeHolder.GetComponent<Text>().DOFade(0, sparkTime).SetLoops(-1, LoopType.Yoyo);
@@ -118,9 +117,9 @@ public class LoginLayer : BasePanel
         }
         
         // 检查用户名长度（示例）
-        if (username.Length < 3 || username.Length > 20)
+        if (username.Length < 3 || username.Length > 7)
         {
-            G.ShowMessage("用户名长度需在3-20个字符之间");
+            G.ShowMessage("用户名长度需在3-7个字符之间");
             return false;
         }
         

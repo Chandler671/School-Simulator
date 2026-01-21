@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public abstract class BasePanel : MonoBehaviour
@@ -20,7 +21,7 @@ public abstract class BasePanel : MonoBehaviour
 
     protected virtual void onInitCom()
     {
-        
+
     }
 
     protected virtual void onRefreshView()
@@ -30,9 +31,9 @@ public abstract class BasePanel : MonoBehaviour
 
     protected virtual void onOpenPanel()
     {
-        
+
     }
-    
+
     public virtual void SetActive(bool active)
     {
         gameObject.SetActive(active);
@@ -53,6 +54,12 @@ public abstract class BasePanel : MonoBehaviour
         {
             UIManager.Instance.panelDict.Remove(name);
         }
+    }
+
+    void OnDisable()
+    {
+        StopAllCoroutines();
+        transform.DOKill();
     }
 }
 

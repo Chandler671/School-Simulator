@@ -59,6 +59,8 @@ public class UIManager
             {UIConst.PackagePanel, "Package/PackagePanel"},
             {UIConst.ProducePanel, "Package/ProducePanel"},
             {UIConst.DetailsPanel, "Package/DetailsPanel"},
+
+            {UIConst.LoginLayer, "Login/LoginLayer"},
         };
     }
 
@@ -132,5 +134,8 @@ public class UIConst
     public const string PackagePanel = "PackagePanel";
     public const string ProducePanel = "ProducePanel";
     public const string DetailsPanel = "DetailsPanel";
+
+    //登录界面
+    public const string LoginLayer = "LoginLayer";
 }
 
