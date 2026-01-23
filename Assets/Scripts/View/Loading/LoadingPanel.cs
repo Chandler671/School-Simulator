@@ -11,7 +11,7 @@ public class LoadingPanel : MonoBehaviour
     
     [Header("加载设置")]
     [SerializeField] private float fakeLoadTime;
-    
+
     void Start()
     {
         StartCoroutine(LoadGames());

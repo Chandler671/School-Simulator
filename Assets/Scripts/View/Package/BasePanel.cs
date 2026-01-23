@@ -8,7 +8,7 @@ public abstract class BasePanel : MonoBehaviour
     protected bool isRemove = false;
     protected new string name;
 
-    void Awake()
+    protected virtual void Awake()
     {
         onInitCom();
     }
@@ -56,7 +56,7 @@ public abstract class BasePanel : MonoBehaviour
         }
     }
 
-    void OnDisable()
+    protected virtual void OnDestroy()
     {
         StopAllCoroutines();
         transform.DOKill();

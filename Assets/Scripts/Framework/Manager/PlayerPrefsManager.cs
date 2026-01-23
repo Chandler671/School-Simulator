@@ -34,7 +34,7 @@ public class PlayerPrefsManager
     private const int MAX_CACHE_SIZE = 100;
 
      // 自动保存数据间隔（秒）
-    public float _autoSaveInterval = 60f;
+    public float _autoSaveInterval = 30f;
     // 自动保存计时器
     public float _autoSaveTimer = 0f;
     #endregion

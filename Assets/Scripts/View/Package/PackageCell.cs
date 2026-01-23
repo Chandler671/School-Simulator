@@ -36,15 +36,15 @@ public class PackageCell : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     
      public void Refresh(PackageLocalItem packageLocalData, int displayNum, PackagePanel uiParent)
     {
-        // Êı¾İ³õÊ¼»¯
+        // æ•°æ®åˆå§‹åŒ–
         this.packageLocalData = packageLocalData;
         this.packageTableItem = GameManager.Instance.GetPackageItemById(packageLocalData.id);
         this.uiParent = uiParent;
         
-        // Ö±½ÓÊ¹ÓÃ´«ÈëµÄÏÔÊ¾ÊıÁ¿
+        // ç›´æ¥ä½¿ç”¨ä¼ å…¥çš„æ˜¾ç¤ºæ•°é‡
         UIItemNum.GetComponent<Text>().text = displayNum.ToString();
         
-        // ÎïÆ·µÄÍ¼Æ¬
+        // ç‰©å“çš„å›¾ç‰‡
         Texture2D t = (Texture2D)Resources.Load(this.packageTableItem.imgPath);
         if (t != null)
         {
@@ -53,21 +53,21 @@ public class PackageCell : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         }
         else
         {
-            Debug.LogError($"¼ÓÔØÍ¼Æ¬Ê§°Ü: {this.packageTableItem.imgPath}");
+            Debug.LogError($"åŠ è½½å›¾ç‰‡å¤±è´¥: {this.packageTableItem.imgPath}");
         }
         
-        // ÎïÆ·µÄÃû×Ö
+        // ç‰©å“çš„åå­—
         UIItemName.GetComponent<Text>().text = this.packageTableItem.name;
     }
 
 
     private void OnClickPackageUIItem()
     {
-        // Ö±½Ó²éÕÒ¼¤»îµÄPackagePanel
+        // ç›´æ¥æŸ¥æ‰¾æ¿€æ´»çš„PackagePanel
         PackagePanel panel = FindObjectOfType<PackagePanel>();
         if (panel != null)
         {
-            // Ê¹ÓÃÃæ°åµÄ¹«¹²·½·¨£¬¶ø²»ÊÇÖ±½Ó·ÃÎÊ±äÁ¿
+            // ä½¿ç”¨é¢æ¿çš„å…¬å…±æ–¹æ³•ï¼Œè€Œä¸æ˜¯ç›´æ¥è®¿é—®å˜é‡
             panel.ShowDetailPanel();
         }
     }
@@ -76,13 +76,13 @@ public class PackageCell : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     {
         if (this.uiParent.chooseUID == this.packageLocalData.uid)
             return;
-        // ¸ù¾İµã»÷ÉèÖÃ×îĞÂµÄuid -> ½ø¶øË¢ĞÂÏêÇé½çÃæ
+        // æ ¹æ®ç‚¹å‡»è®¾ç½®æœ€æ–°çš„uid -> è¿›è€Œåˆ·æ–°è¯¦æƒ…ç•Œé¢
         this.uiParent.chooseUID = this.packageLocalData.uid;
-        // Ö±½Ó²éÕÒ¼¤»îµÄPackagePanel
+        // ç›´æ¥æŸ¥æ‰¾æ¿€æ´»çš„PackagePanel
         PackagePanel panel = FindObjectOfType<PackagePanel>();
         if (panel != null)
         {
-            // Ê¹ÓÃÃæ°åµÄ¹«¹²·½·¨£¬¶ø²»ÊÇÖ±½Ó·ÃÎÊ±äÁ¿
+            // ä½¿ç”¨é¢æ¿çš„å…¬å…±æ–¹æ³•ï¼Œè€Œä¸æ˜¯ç›´æ¥è®¿é—®å˜é‡
             panel.ShowDetailPanel();
         }
     }

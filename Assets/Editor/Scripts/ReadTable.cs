@@ -9,11 +9,11 @@ using OfficeOpenXml;
 [InitializeOnLoad]
 public class Startup
 {
-    // Õâ¸ö·½·¨»áÔÚÔËĞĞÇ°Ö´ĞĞ
+    // è¿™ä¸ªæ–¹æ³•ä¼šåœ¨è¿è¡Œå‰æ‰§è¡Œ
     static Startup()
     {
-        // Ö»ÔÚ±à¼­Æ÷Æô¶¯Ê±Ö´ĞĞÒ»´Î
-        if (EditorApplication.timeSinceStartup < 30) // Æô¶¯ºó30ÃëÄÚ
+        // åªåœ¨ç¼–è¾‘å™¨å¯åŠ¨æ—¶æ‰§è¡Œä¸€æ¬¡
+        if (EditorApplication.timeSinceStartup < 30) // å¯åŠ¨å30ç§’å†…
         {
             EditorApplication.delayCall += () =>
             {
@@ -28,19 +28,20 @@ public static class ExcelTableReader
     private static readonly string EXCEL_FOLDER_PATH = "Assets/Editor/Excel/";
     private static readonly string OUTPUT_FOLDER_PATH = "Assets/Resources/Data/";
     
-    // ËùÓĞĞèÒª¶ÁÈ¡µÄExcel±íÅäÖÃ
+    // æ‰€æœ‰éœ€è¦è¯»å–çš„Excelè¡¨é…ç½®
     private static readonly List<ExcelTableConfig> tableConfigs = new List<ExcelTableConfig>
     {
         new ExcelTableConfig("PackageData.xlsx", "PackageTable", typeof(PackageTable)),
+        new ExcelTableConfig("hero_detail.xlsx", "hero_detail", typeof(hero_detail)),
     };
     
 
     [MenuItem("Tools/Excel/Read All Tables")]
     public static void ReadAllTables()
     {
-        Debug.Log("¿ªÊ¼¶ÁÈ¡ËùÓĞExcel±í¸ñ...");
+        Debug.Log("å¼€å§‹è¯»å–æ‰€æœ‰Excelè¡¨æ ¼...");
         
-        // È·±£Êä³öÄ¿Â¼´æÔÚ
+        // ç¡®ä¿è¾“å‡ºç›®å½•å­˜åœ¨
         EnsureDirectoryExists(OUTPUT_FOLDER_PATH);
         
         bool allSuccess = true;
@@ -51,17 +52,17 @@ public static class ExcelTableReader
             {
                 if (ReadTable(config))
                 {
-                    Debug.Log($"? {config.assetName} ¶ÁÈ¡³É¹¦");
+                    Debug.Log($"? {config.assetName} è¯»å–æˆåŠŸ");
                 }
                 else
                 {
-                    Debug.LogError($"? {config.assetName} ¶ÁÈ¡Ê§°Ü");
+                    Debug.LogError($"? {config.assetName} è¯»å–å¤±è´¥");
                     allSuccess = false;
                 }
             }
             catch (Exception e)
             {
-                Debug.LogError($"¶ÁÈ¡±í¸ñ {config.assetName} Ê±·¢Éú´íÎó: {e.Message}");
+                Debug.LogError($"è¯»å–è¡¨æ ¼ {config.assetName} æ—¶å‘ç”Ÿé”™è¯¯: {e.Message}");
                 allSuccess = false;
             }
         }
@@ -71,7 +72,7 @@ public static class ExcelTableReader
         
         if (allSuccess)
         {
-            Debug.Log("ËùÓĞ±í¸ñ¶ÁÈ¡Íê³É£¡");
+            Debug.Log("æ‰€æœ‰è¡¨æ ¼è¯»å–å®Œæˆï¼");
         }
     }
 
@@ -81,7 +82,7 @@ public static class ExcelTableReader
         
         if (!File.Exists(excelPath))
         {
-            Debug.LogError($"ExcelÎÄ¼ş²»´æÔÚ: {excelPath}");
+            Debug.LogError($"Excelæ–‡ä»¶ä¸å­˜åœ¨: {excelPath}");
             return false;
         }
         
@@ -95,35 +96,35 @@ public static class ExcelTableReader
                 
                 if (worksheet == null)
                 {
-                    Debug.LogError($"¹¤×÷±í {config.sheetName} ²»´æÔÚ");
+                    Debug.LogError($"å·¥ä½œè¡¨ {config.sheetName} ä¸å­˜åœ¨");
                     return false;
                 }
                 
-                // ´´½¨ScriptableObjectÊµÀı
+                // åˆ›å»ºScriptableObjectå®ä¾‹
                 ScriptableObject table = ScriptableObject.CreateInstance(config.tableType);
                 
-                // »ñÈ¡DataList×Ö¶Î
+                // è·å–DataListå­—æ®µ
                 FieldInfo dataListField = config.tableType.GetField("DataList", 
                     BindingFlags.Public | BindingFlags.Instance);
                 
                 if (dataListField == null)
                 {
-                    Debug.LogError($"ÔÚ {config.tableType.Name} ÖĞÕÒ²»µ½ DataList ×Ö¶Î");
+                    Debug.LogError($"åœ¨ {config.tableType.Name} ä¸­æ‰¾ä¸åˆ° DataList å­—æ®µ");
                     return false;
                 }
                 
-                // »ñÈ¡DataListµÄÖµ
+                // è·å–DataListçš„å€¼
                 object dataList = dataListField.GetValue(table);
                 
-                // »ñÈ¡DataListµÄAdd·½·¨
+                // è·å–DataListçš„Addæ–¹æ³•
                 MethodInfo addMethod = dataList.GetType().GetMethod("Add");
                 
-                // »ñÈ¡ÁĞ±íÔªËØµÄÀàĞÍ
+                // è·å–åˆ—è¡¨å…ƒç´ çš„ç±»å‹
                 Type itemType = dataList.GetType().GetGenericArguments()[0];
                 
-                // ¶ÁÈ¡±íÍ·£¨¼ÙÉèµÚ2ĞĞÊÇ×Ö¶ÎÃû£©
+                // è¯»å–è¡¨å¤´ï¼ˆå‡è®¾ç¬¬2è¡Œæ˜¯å­—æ®µåï¼‰
                 Dictionary<int, FieldInfo> columnFieldMap = new Dictionary<int, FieldInfo>();
-                int headerRow = 2; // ±íÍ·ÔÚµÚ2ĞĞ
+                int headerRow = 2; // è¡¨å¤´åœ¨ç¬¬2è¡Œ
                 
                 for (int col = worksheet.Dimension.Start.Column; col <= worksheet.Dimension.End.Column; col++)
                 {
@@ -137,25 +138,25 @@ public static class ExcelTableReader
                         }
                         else
                         {
-                            Debug.LogWarning($"×Ö¶Î {fieldName} ÔÚ {itemType.Name} ÖĞ²»´æÔÚ");
+                            Debug.LogWarning($"å­—æ®µ {fieldName} åœ¨ {itemType.Name} ä¸­ä¸å­˜åœ¨");
                         }
                     }
                 }
                 
-                // ¶ÁÈ¡Êı¾İ£¨´ÓµÚ3ĞĞ¿ªÊ¼£©
+                // è¯»å–æ•°æ®ï¼ˆä»ç¬¬3è¡Œå¼€å§‹ï¼‰
                 int dataStartRow = 3;
                 int rowCount = 0;
                 
                 for (int row = dataStartRow; row <= worksheet.Dimension.End.Row; row++)
                 {
-                    // ¼ì²éµÚÒ»ÁĞÊÇ·ñÎª¿Õ£¬Èç¹ûÎª¿ÕÔòÌø¹ı
+                    // æ£€æŸ¥ç¬¬ä¸€åˆ—æ˜¯å¦ä¸ºç©ºï¼Œå¦‚æœä¸ºç©ºåˆ™è·³è¿‡
                     object firstCellValue = worksheet.GetValue(row, worksheet.Dimension.Start.Column);
                     if (firstCellValue == null || string.IsNullOrWhiteSpace(firstCellValue.ToString()))
                     {
                         continue;
                     }
                     
-                    // ´´½¨ĞÂµÄÊı¾İÏî
+                    // åˆ›å»ºæ–°çš„æ•°æ®é¡¹
                     object tableItem = Activator.CreateInstance(itemType);
                     
                     bool hasData = false;
@@ -171,14 +172,14 @@ public static class ExcelTableReader
                         {
                             try
                             {
-                                // ×ª»»Êı¾İÀàĞÍ
+                                // è½¬æ¢æ•°æ®ç±»å‹
                                 object convertedValue = ConvertValue(cellValue, field.FieldType);
                                 field.SetValue(tableItem, convertedValue);
                                 hasData = true;
                             }
                             catch (Exception e)
                             {
-                                Debug.LogError($"×ª»»Êı¾İÊ§°Ü (ĞĞ{row}, ÁĞ{col}, ×Ö¶Î{field.Name}): {e.Message}");
+                                Debug.LogError($"è½¬æ¢æ•°æ®å¤±è´¥ (è¡Œ{row}, åˆ—{col}, å­—æ®µ{field.Name}): {e.Message}");
                             }
                         }
                     }
@@ -190,12 +191,12 @@ public static class ExcelTableReader
                     }
                 }
                 
-                Debug.Log($"¶ÁÈ¡µ½ {rowCount} ĞĞÊı¾İ");
+                Debug.Log($"è¯»å–åˆ° {rowCount} è¡Œæ•°æ®");
                 
-                // ±£´æÎªassetÎÄ¼ş
+                // ä¿å­˜ä¸ºassetæ–‡ä»¶
                 string assetPath = Path.Combine(OUTPUT_FOLDER_PATH, config.assetName + ".asset");
                 
-                // Èç¹ûÎÄ¼şÒÑ´æÔÚ£¬É¾³ı¾ÉÎÄ¼ş
+                // å¦‚æœæ–‡ä»¶å·²å­˜åœ¨ï¼Œåˆ é™¤æ—§æ–‡ä»¶
                 if (File.Exists(assetPath))
                 {
                     AssetDatabase.DeleteAsset(assetPath);
@@ -209,7 +210,7 @@ public static class ExcelTableReader
         }
         catch (Exception e)
         {
-            Debug.LogError($"¶ÁÈ¡ExcelÎÄ¼şÊ§°Ü: {e.Message}");
+            Debug.LogError($"è¯»å–Excelæ–‡ä»¶å¤±è´¥: {e.Message}");
             return false;
         }
     }
@@ -224,7 +225,7 @@ public static class ExcelTableReader
             return Enum.Parse(targetType, value.ToString());
         }
         
-        // ´¦Àí¿É¿ÕÀàĞÍ
+        // å¤„ç†å¯ç©ºç±»å‹
         if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
             Type underlyingType = Nullable.GetUnderlyingType(targetType);
@@ -234,7 +235,7 @@ public static class ExcelTableReader
             return Convert.ChangeType(value, underlyingType);
         }
         
-        // ÌØÊâ´¦ÀíintµÄ×ª»»
+        // ç‰¹æ®Šå¤„ç†intçš„è½¬æ¢
         if (targetType == typeof(int))
         {
             if (value is double)

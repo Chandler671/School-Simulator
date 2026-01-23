@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerJson
 {
     public string username;
+    public bool isNewPlayer = true;
+    public int heroId;
 }
 
 
@@ -31,6 +33,17 @@ public class PlayerModel
                 _playerJson = value;
             }
         }
+    }
+
+    public void SavePlayerData()
+    {
+        if (playerJson.username == null)
+        {
+            Debug.Log("用户id为空，保存失败");
+            return;
+        }
+        Debug.Log($"已保存用户：{_playerJson.username} 数据");
+        PlayerPrefsManager.Instance.SetObject<PlayerJson>(_playerJson.username, _playerJson);    
     }
 
     private static PlayerModel _instance;

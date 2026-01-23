@@ -61,6 +61,7 @@ public class UIManager
             {UIConst.DetailsPanel, "Package/DetailsPanel"},
 
             {UIConst.LoginLayer, "Login/LoginLayer"},
+            {UIConst.NewGuideView, "Login/NewGuideView"},
         };
     }
 
@@ -137,5 +138,6 @@ public class UIConst
 
     //登录界面
     public const string LoginLayer = "LoginLayer";
+    public const string NewGuideView = "NewGuideView";
 }
 
