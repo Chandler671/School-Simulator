@@ -62,6 +62,8 @@ public class UIManager
 
             {UIConst.LoginLayer, "Login/LoginLayer"},
             {UIConst.NewGuideView, "Login/NewGuideView"},
+
+            {UIConst.MainCityLayer, "MainCity/MainCityLayer"},
         };
     }
 
@@ -139,5 +141,8 @@ public class UIConst
     //登录界面
     public const string LoginLayer = "LoginLayer";
     public const string NewGuideView = "NewGuideView";
+
+    //主界面
+    public const string MainCityLayer = "MainCityLayer";
 }
 

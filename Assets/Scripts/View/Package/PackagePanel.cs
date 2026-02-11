@@ -59,7 +59,7 @@ public class PackagePanel : BasePanel
         UIDetailPanelExitBtn.GetComponent<Button>().onClick.AddListener(OnClickDetailExitBtn);
     }
 
-    protected override void onRefreshView()
+    public override void Refresh()
     {
         RefreshScroll();
     }

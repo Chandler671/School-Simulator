@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int targetWidth = 1920;
     [SerializeField] private int targetHeight = 1080;
     [SerializeField] private int targetRefreshRate = 60;
-    
+
     [Header("场景设置")]
     [SerializeField] private string loadingSceneName = "Loading";
 
@@ -54,16 +54,16 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
-    private void Update() 
+    private void Update()
     {
         // 自动保存数据
         if (this._autoSaveInterval > 0 && PlayerPrefsManager.Instance._isDirty)
         {
             this._autoSaveTimer += Time.deltaTime;
-            if (this._autoSaveTimer >=this. _autoSaveInterval)
+            if (this._autoSaveTimer >= this._autoSaveInterval)
             {
                 PlayerPrefsManager.Instance.ForceSave();
                 this._autoSaveTimer = 0f;
@@ -74,19 +74,19 @@ public class GameManager : MonoBehaviour
     void InitializeGame()
     {
         if (isInitialized) return;
-        
+
         // 设置初始分辨率
         SetInitialResolution();
-        
+
         // 确保当前是加载场景
         if (SceneManager.GetActiveScene().name != loadingSceneName)
         {
             SceneManager.LoadScene(loadingSceneName);
         }
-        
+
         isInitialized = true;
     }
-    
+
     void SetInitialResolution()
     {
         bool foundExactMatch = false;
@@ -99,16 +99,16 @@ public class GameManager : MonoBehaviour
             denominator = 1
         };
 
-        if (res.width == targetWidth && res.height == targetHeight )
+        if (res.width == targetWidth && res.height == targetHeight)
         {
             foundExactMatch = true;
         }
-        
+
         if (foundExactMatch)
         {
-            Screen.SetResolution(res.width, 
-                               res.height, 
-                               FullScreenMode.Windowed, 
+            Screen.SetResolution(res.width,
+                               res.height,
+                               FullScreenMode.Windowed,
                                targetRate);
         }
         else
@@ -163,6 +163,11 @@ public class GameManager : MonoBehaviour
         List<PackageLocalItem> localItems = PackageLocalData.Instance.LoadPackage();
         localItems.Sort(new PackageItemComparer());
         return localItems;
+    }
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefsManager.Instance.ForceSave();
     }
 }
 

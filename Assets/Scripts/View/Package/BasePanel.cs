@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public abstract class BasePanel : MonoBehaviour
+public class BasePanel : MonoBehaviour
 {
     protected bool isRemove = false;
     protected new string name;
@@ -16,7 +16,7 @@ public abstract class BasePanel : MonoBehaviour
     void Start()
     {
         onOpenPanel();
-        onRefreshView();
+        Refresh();
     }
 
     protected virtual void onInitCom()
@@ -24,7 +24,7 @@ public abstract class BasePanel : MonoBehaviour
 
     }
 
-    protected virtual void onRefreshView()
+    public virtual void Refresh()
     {
 
     }

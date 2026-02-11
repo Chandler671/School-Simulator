@@ -161,15 +161,13 @@ public class LoginLayer : BasePanel
     // 登录成功处理
     void OnLoginSuccess()
     {
-        // 触发登录成功事件
-        onLoginSuccess?.Invoke();
-        G.ShowMessage($"登录成功！欢迎玩家：{currentUsername}");
         //判断是否过了新手引导
         if (PlayerModel.Instance.playerJson.isNewPlayer)
         {
             UIManager.Instance.OpenPanel(UIConst.NewGuideView);
         }
-        ClosePanel();
+        UIManager.Instance.OpenPanel(UIConst.MainCityLayer);
+        EventManager.QueueEvent(new login_Success(PlayerModel.Instance.playerJson.username));
     }
 
     // 登录失败处理
