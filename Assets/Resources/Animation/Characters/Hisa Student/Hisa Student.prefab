@@ -2354,6 +2354,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3133499821961615314}
   - component: {fileID: 3133499821961615325}
+  - component: {fileID: -8368792305408454152}
   m_Layer: 0
   m_Name: Hisa Student
   m_TagString: Untagged
@@ -2398,6 +2399,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8368792305408454152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3133499821961615315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d1a71494d574f4f83f3907a3474c74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3133499821961615325}
+  walkBoolParam: IsWalking
+  moveSpeed: 80
+  baseSpeedForAni: 45
 --- !u!1 &3133499822044974429
 GameObject:
   m_ObjectHideFlags: 0

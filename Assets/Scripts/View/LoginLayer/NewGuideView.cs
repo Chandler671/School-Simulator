@@ -100,6 +100,8 @@ public class NewGuideView : BasePanel
         playerJson.heroId = heroId;
         playerJson.isNewPlayer = false;
         PlayerModel.Instance.SavePlayerData();
+        UIManager.Instance.OpenPanel(UIConst.MainCityLayer);
+        EventManager.QueueEvent(new login_Success(PlayerModel.Instance.playerJson.username, PlayerModel.Instance.playerJson.heroId));
         ClosePanel();
     }
 }

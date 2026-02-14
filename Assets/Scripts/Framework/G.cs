@@ -27,7 +27,7 @@ public class G
         {
             uiRoot = new GameObject("Canvas").transform;
         }
-        GameObject showMessage1 = GameObject.Instantiate(showMessage, uiRoot, false);
+        GameObject showMessage1 = Object.Instantiate(showMessage, uiRoot, false);
         ShowMessage showMessage2 = showMessage1.gameObject.GetComponent<ShowMessage>();
         showMessage2.ContentTxt = message;
     }

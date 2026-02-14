@@ -165,9 +165,13 @@ public class LoginLayer : BasePanel
         if (PlayerModel.Instance.playerJson.isNewPlayer)
         {
             UIManager.Instance.OpenPanel(UIConst.NewGuideView);
+            ClosePanel();
         }
-        UIManager.Instance.OpenPanel(UIConst.MainCityLayer);
-        EventManager.QueueEvent(new login_Success(PlayerModel.Instance.playerJson.username));
+        else
+        {
+            UIManager.Instance.OpenPanel(UIConst.MainCityLayer);
+            EventManager.QueueEvent(new login_Success(PlayerModel.Instance.playerJson.username, PlayerModel.Instance.playerJson.heroId));
+        }
     }
 
     // 登录失败处理

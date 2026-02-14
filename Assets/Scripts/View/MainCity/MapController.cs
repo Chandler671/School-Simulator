@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
+using Unity.VisualScripting;
+using UnityEngine.EventSystems;
+using Coffee.UIEffects;
 
 /// <summary>
 /// UI地图拖拽控制器
@@ -12,7 +15,7 @@ public class MapController : HudBase
     [Header("拖拽设置")]
     [SerializeField] private bool enableDrag = true;
     [SerializeField] private DragMode dragMode = DragMode.Map;
-    [SerializeField][Range(0.1f, 1.9f)] private float dragSpeed = 1.2f;
+    [SerializeField][Range(0.1f, 1.9f)] private float dragSpeed;
 
     private Dragable dragableComponent;
     private MainCityLayer mainCityLayer;
@@ -26,7 +29,7 @@ public class MapController : HudBase
     protected override void AddListeners()
     {
         base.AddListeners();
-        canvas.AddDragListener(dragableComponent, dragMode, onDrag, dragSpeed);   
+        canvas.AddDragListener(dragableComponent, dragMode, onComplete, dragSpeed);
     }
 
     protected override void RemoveListeners()
@@ -35,10 +38,10 @@ public class MapController : HudBase
         if (dragableComponent == null) return;
         canvas.RemoveDragListener(dragableComponent);
     }
-    
-    private void onDrag()
-    {
 
+    private void onComplete()
+    {
+        
     }
 
 }
