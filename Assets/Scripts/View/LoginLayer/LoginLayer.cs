@@ -11,6 +11,7 @@ public class LoginLayer : BasePanel
     [SerializeField] private Button loginButton;
     [SerializeField] private Text placeHolder;
     [SerializeField] private float sparkTime;
+    private Transform newPlayerBtn;
 
     [SerializeField] private float loginProcessTime = 1.5f;
 
@@ -27,6 +28,8 @@ public class LoginLayer : BasePanel
 
     protected override void onOpenPanel()
     {
+        this.newPlayerBtn = transform.Find("down/BtnGroup/newPlayBtn");
+        currentUsername = PlayerPrefsManager.Instance.GetString("CurrentUser");
         InitializeUI();
         SetupEventListeners();
         this.name = UIConst.LoginLayer;
@@ -47,6 +50,19 @@ public class LoginLayer : BasePanel
             }
         }
 
+        usernameInputField.gameObject.SetActive(false);
+        // 判断是否有其它存档
+        if (PlayerPrefsManager.Instance.GetString("CurrentUser") != "")
+        {
+            newPlayerBtn.gameObject.SetActive(true);
+            loginButton.gameObject.SetActive(true);
+            loginButton.transform.Find("txt").GetComponent<Text>().text = "继续游戏";
+        }
+        else
+        {
+            newPlayerBtn.gameObject.SetActive(false);
+            usernameInputField.gameObject.SetActive(true);
+        }
     }
 
     public void onSelect()
@@ -68,6 +84,11 @@ public class LoginLayer : BasePanel
         if (loginButton != null)
         {
             loginButton.onClick.AddListener(OnLoginButtonClicked);
+        }
+
+        if (newPlayerBtn != null)
+        {
+            newPlayerBtn.GetComponent<Button>().onClick.AddListener(OnNewPlayer);
         }
 
         // 绑定输入框回车键提交
@@ -92,6 +113,17 @@ public class LoginLayer : BasePanel
 
         // 触发登录开始事件
         onLoginStarted?.Invoke();
+
+        currentUsername = usernameInputField.text;
+        PlayerPrefsManager.Instance.SetString("CurrentUser", currentUsername);
+
+        if (currentUsername != "")
+        {
+            PlayerModel.Instance.playerJson = PlayerPrefsManager.Instance.GetObject<PlayerJson>(currentUsername);
+            // 开始登录流程
+            StartCoroutine(LoginProcess(currentUsername));
+            return;
+        }
 
         // 获取输入的用户名和密码
         string username = usernameInputField != null ? usernameInputField.text : "";
@@ -172,6 +204,14 @@ public class LoginLayer : BasePanel
             UIManager.Instance.OpenPanel(UIConst.MainCityLayer);
             EventManager.QueueEvent(new login_Success(PlayerModel.Instance.playerJson.username, PlayerModel.Instance.playerJson.heroId));
         }
+    }
+
+    void OnNewPlayer()
+    {
+        loginButton.transform.Find("txt").GetComponent<Text>().text = "开始游戏";
+        usernameInputField.gameObject.SetActive(true);
+        loginButton.gameObject.SetActive(true);
+        newPlayerBtn.gameObject.SetActive(false);
     }
 
     // 登录失败处理
